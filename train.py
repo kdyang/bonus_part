@@ -84,7 +84,7 @@ if not args.test:
             temp=ssw.feature_mapping(temp)
             temp=torch.from_numpy(np.array(temp))
             temp=tensor.view([1,*tensor.shape])
-            
+            print(i)
             #forward + backward + optimizer
             outputs_1,output_2 = net_wsddn(images,temp)
             loss = criterion(outputs_1 , labels)
