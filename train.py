@@ -6,9 +6,12 @@ from torch.utils.data import DataLoader
 from torchsummary import summary
 from torch.autograd import Variable
 import torch.optim as optim
-
+import argparse
 from model import WSDDN
 from data_pre import myDataSet
+import os
+from tensorboardX import SummaryWriter
+import ssw
 
 Transform = transforms.Compose([
     transforms.Resize([224, 224]),
@@ -18,33 +21,113 @@ Transform = transforms.Compose([
                          std  = [ 0.229, 0.224, 0.225 ]),
     ])
 
-BATCH_SIZE = 2
-net_wsddn = WSDDN('VGG11')
-criterion = nn.BCELoss() 
-optimizer = optim.SGD(net_wsddn.parameters(), lr = 0.001, momentum = 0.9)
+parser = argparse.ArgumentParser(description='wsddn Input:BatchSize initial LR EPOCH')
+parser.add_argument('--test','-t', action = 'store_true',
+ help='set test mode')
+parser.add_argument('--model_path', type=str,default='./model_para',
+ help='dir to save para')
+parser.add_argument('--BATCH_SIZE', type=int,default=1,
+ help='batch_size')
+parser.add_argument('--LR', type=float,default=0.0001,
+ help='Learning Rate')
+parser.add_argument('--EPOCH', type=int,default=40,
+ help='epoch')
+parser.add_argument('--GPU', type=int,default=0,
+ help='GPU')
+args = parser.parse_args()
+model_path=args.model_path
+BATCH_SIZE=args.BATCH_SIZE
+LR=args.LR
+EPOCH=args.EPOCH
+print('model_path:',model_path)
+print('batch_size:',BATCH_SIZE)
+print('initial LR:',LR)
+print('epoch:',EPOCH)
 
+torch.cuda.set_device(args.GPU)
+net_wsddn = WSDDN('VGG11')
+if os.path.exists(os.path.join(model_path, 'wsddn.pkl')):
+    net_wsddn.load_state_dict(torch.load(os.path.join(model_path, 'wsddn.pkl')))
+else:
+    pretrained_dict = torch.load('vgg11_bn-6002323d.pth.1')
+    modified_dict = net_wsddn.state_dict()
+    pretrained_dict = {k: v for k, v in pretrained_dict.items() if k in modified_dict}
+    modified_dict.update(pretrained_dict)
+    net_wsddn.load_state_dict(modified_dict)
+net_wsddn.cuda()
+
+criterion = nn.BCELoss(weight=None, size_average=True) 
+optimizer = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9)
+writer = SummaryWriter('WSDDN')
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=9, gamma=0.1)
 trainData = myDataSet('JPEGImages/', 0, Transform)
 testData = myDataSet('JPEGImages/' ,1, Transform)
-print('trainData', len(trainData))
-print('testData', len(testData))
-trainData[0][0].shape
-trainLoader = torch.utils.data.DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=False)
+#print('trainData', len(trainData))
+#print('testData', len(testData))
+
+trainLoader = torch.utils.data.DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True,num_workers=3)
 testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=BATCH_SIZE, shuffle=False)
+if not args.test:
+    net_wsddn.train()
+    for epoch in range(EPOCH):
+        scheduler.step(epoch)
+        running_loss = 0.0
+        for i, (images, labels) in enumerate(trainLoader):
+            images = Variable(images).cuda()
+            labels = Variable(labels).cuda()
+            optimizer.zero_grad()
+            #ssw
+            #   for index in range(BATCH_SIZE):
+            img=images[0,:,:,:]
+            img=img.view(224,224,-1)
+            temp=ssw(img)
+            temp=feature_mapping(temp)
+            temp=torch.from_numpy(np.array(temp))
+            temp=tensor.view([1,*tensor.shape])
+            
+            #forward + backward + optimizer
+            outputs = net_wsddn(images)
+            loss = criterion(outputs , labels)
+            loss.backward()
+            optimizer.step()
 
-for epoch in range(2):
-    running_loss = 0.0
-    for i, (images, labels) in enumerate(trainLoader):
-        images = Variable(images)
-        labels = Variable(labels)
-        optimizer.zero_grad()
-        #forward + backward + optimizer
-        outputs = net_wsddn(images)
-        loss = criterion(outputs , labels)
-        loss.backward()
-        optimizer.step()
+            running_loss += loss.item()
 
-        running_loss += loss.data[0]
-        if i % 2000 == 1999:
-            print('[%d , %5d] loss: %.3f' % (epoch + 1 , i + 1 , running_loss / 2000))
-            running_loss = 0.0
-print('Finished Training')
+            if i % 2000 == 1999:
+                print('[%d , %5d] loss: %.3f' % (epoch + 1 , i + 1 , running_loss / 2000))
+                running_loss = 0.0
+        writer.add_scalar('Train/loss', loss.item(),epoch)
+        torch.save(net_wsddn.state_dict(), os.path.join(model_path, 'wsddn.pkl'))
+    print('Finished Training')
+    writer.close()
+    torch.save(net_wsddn.state_dict(), os.path.join(model_path, 'wsddn.pkl'))
+else:
+    ##UNFINISHED
+    net_wsddn.eval()
+        for images, labels in trainLoader:
+            images = Variable(images).cuda()
+            labels= Variable(labels).cuda()
+            outputs = net_wsddn(images)
+            outputs=torch.sigmoid(outputs)
+            predicted = outputs.data>=0.5
+            vec_1 += (predicted.float() == labels).cpu().float().sum(0) #correct_num
+            vec_2 += labels.cpu().sum(0)#appear_num
+            #equal to predicted=outputs.data>=0
+            total += labels.size(0)*labels.size(1)
+            correct += (predicted.float() == labels).sum()
+        print('Classification Accuracy of the model on the train images(mAcc): %.4f %%' % (100 * float(correct) / float(total)))
+        print('Localization Accuracy of the model on the train images(mAP): %.4f %%' % (100 * (vec_1*vec_2).sum()))
+        
+        for images, labels in testLoader:
+            images = Variable(images).cuda()
+            labels= Variable(labels).cuda()
+            outputs = net_wsddn(images)
+            outputs=torch.sigmoid(outputs)
+            predicted = outputs.data>=0.5
+            vec_1 += (predicted.float() == labels).cpu().float().sum(0) #correct_num
+            vec_2 += labels.cpu().sum(0)#appear_num
+            #equal to predicted=outputs.data>=0
+            total += labels.size(0)*labels.size(1)
+            correct += (predicted.float() == labels).sum()
+        print('Classification Accuracy of the model on the test images(mAcc): %.4f %%' % (100 * float(correct) / float(total)))
+        print('Localization Accuracy of the model on the test images(mAP): %.4f %%' % (100 * (vec_1*vec_2).sum()))

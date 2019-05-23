@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 import math
+import torch 
 def ssw(img,scale=500,sigma=0.9,min_size=10):
     img_lbl,regions=selectivesearch.selective_search(img,scale=scale,sigma=sigma,min_size=min_size)
     candidates =set()
@@ -59,9 +60,16 @@ def feature_mapping(regions):
 #        mapping.append((math.floor(ele[0]/16)+1,math.floor(ele[1]/16)+1,math.ceil((ele[0]+ele[2])/16)-1-(math.floor(ele[0]/16)+1),
 #        math.ceil((ele[1]+ele[3])/16)-1-(math.floor(ele[1]/16)+1)))     
     return mapping
-
-img=cv2.imread('2011_002943.jpg')
+'''
+img=torch.rand([3,224,224])
+img=img.view(224,224,-1)
+#img=cv2.imread('2011_002943.jpg')
 a=ssw(img)
 b=feature_mapping(a)
-print(a)
-print(b)
+tensor=torch.from_numpy(np.array(b))
+print(tensor)
+print(tensor.shape)
+tensor=tensor.view([1,*tensor.shape])
+
+print(tensor.shape)
+'''
