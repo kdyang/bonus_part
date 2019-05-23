@@ -86,8 +86,8 @@ if not args.test:
             temp=tensor.view([1,*tensor.shape])
             
             #forward + backward + optimizer
-            outputs = net_wsddn(images)
-            loss = criterion(outputs , labels)
+            outputs_1,output_2 = net_wsddn(images,temp)
+            loss = criterion(outputs_1 , labels)
             loss.backward()
             optimizer.step()
 
