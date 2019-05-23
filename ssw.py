@@ -1,5 +1,4 @@
-import cv2 
-import selectivesearch
+ import selectivesearch
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
