@@ -80,7 +80,7 @@ if not args.test:
             #   for index in range(BATCH_SIZE):
             img=images[0,:,:,:]
             img=img.view(480,480,-1)
-            temp=ssw.ssw(img)
+            temp=ssw.ssw(img.cpu())
             temp=ssw.feature_mapping(temp)
             temp=torch.from_numpy(np.array(temp))
             temp=tensor.view([1,*tensor.shape])
