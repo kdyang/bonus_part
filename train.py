@@ -14,7 +14,7 @@ from tensorboardX import SummaryWriter
 import ssw
 
 Transform = transforms.Compose([
-    transforms.Resize([224, 224]),
+    transforms.Resize([480, 480]),
     transforms.RandomHorizontalFlip(),
     transforms.ToTensor(),
     transforms.Normalize(mean = [ 0.485, 0.456, 0.406 ],
@@ -59,7 +59,7 @@ net_wsddn.cuda()
 criterion = nn.BCELoss(weight=None, size_average=True) 
 optimizer = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9)
 writer = SummaryWriter('WSDDN')
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=9, gamma=0.1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 trainData = myDataSet('JPEGImages/', 0, Transform)
 testData = myDataSet('JPEGImages/' ,1, Transform)
 #print('trainData', len(trainData))
@@ -79,7 +79,7 @@ if not args.test:
             #ssw
             #   for index in range(BATCH_SIZE):
             img=images[0,:,:,:]
-            img=img.view(224,224,-1)
+            img=img.view(480,480,-1)
             temp=ssw(img)
             temp=feature_mapping(temp)
             temp=torch.from_numpy(np.array(temp))
