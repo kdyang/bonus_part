@@ -14,7 +14,7 @@ Transform = transforms.Compose([
 class myDataSet(data.Dataset):
     def __init__(self, root, istest, transfrom):
         self.root = root
-        self.data_txt = open('label.txt', 'r')
+        self.data_txt = open('annotations.txt', 'r')
         self.istest = istest
         self.transform = transfrom
         self.imgs = []
