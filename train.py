@@ -7,7 +7,7 @@ from torchsummary import summary
 from torch.autograd import Variable
 import torch.optim as optim
 import argparse
-from model import WSDDN
+from model_wsddn import WSDDN
 from data_pre import myDataSet
 import os
 from tensorboardX import SummaryWriter
