@@ -103,8 +103,9 @@ if not args.test:
     torch.save(net_wsddn.state_dict(), os.path.join(model_path, 'wsddn.pkl'))
 else:
     ##UNFINISHED
+    '''
     net_wsddn.eval()
-        for images, labels in trainLoader:
+    for images, labels in trainLoader:
             images = Variable(images).cuda()
             labels= Variable(labels).cuda()
             outputs = net_wsddn(images)
@@ -131,3 +132,4 @@ else:
             correct += (predicted.float() == labels).sum()
         print('Classification Accuracy of the model on the test images(mAcc): %.4f %%' % (100 * float(correct) / float(total)))
         print('Localization Accuracy of the model on the test images(mAP): %.4f %%' % (100 * (vec_1*vec_2).sum()))
+'''
