@@ -78,8 +78,8 @@ if not args.test:
             kuang =Variable(kuang).cuda()
             optimizer.zero_grad()
             #ssw
-            kuang=kuang.view([1,*kuang.shape])
-            print(kuang)
+            #kuang=kuang.view([1,*kuang.shape])
+            print(kuang.shape)
             #forward + backward + optimizer
             outputs_1,output_2 = net_wsddn(images,kuang)
             loss = criterion(outputs_1 , labels)
