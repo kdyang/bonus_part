@@ -7,7 +7,7 @@ from math import floor
 from spp_layer import spatial_pyramid_pool
 #from data_pre import myDataSet
 
-BATCH_SIZE = 2
+BATCH_SIZE = 1
 R = 10
 
 '''
