@@ -46,6 +46,7 @@ class myDataSet(data.Dataset):
         for line in self.ssw_txt:
             line = line.rstrip()
             words = line.split()
+            ssw_block = torch.Tensor(0, 4)
             if words[0] == self.imgs[index][0]:
                 ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                 for i in range(floor((len(words) - 1) / 4)):
