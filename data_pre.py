@@ -56,6 +56,7 @@ class myDataSet(data.Dataset):
                 break
         if flag==0:
             print(words[0])
+            print(ssw_block)
         return data_once, ssw_block, torch.Tensor(label_once)
     
     def __len__(self):
