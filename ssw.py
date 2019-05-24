@@ -1,3 +1,4 @@
+import cv2 
 import selectivesearch
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
@@ -12,15 +13,16 @@ def ssw(img,scale=500,sigma=0.9,min_size=10):
         if r['rect'] in candidates:
             continue
         # 太小和太大的不要
-        if r['size'] < 200 or r['size']>22500:
+        if r['size'] < 400 or r['size']>40000:
             continue
         x, y, w, h = r['rect']
         # 太不方的不要
-        if w / h > 2 or h / w > 2:
+        if w  > 1.3*h or h > 1.3* w :
             continue
         candidates.add(r['rect'])
         ##('len(candidates)', 34) 一次过滤后剩余34个窗
     #2)第二次过滤 大圈套小圈的目标 只保留大圈
+    '''
     num_array=[]
     for i in candidates:
         if len(num_array)==0:
@@ -46,7 +48,8 @@ def ssw(img,scale=500,sigma=0.9,min_size=10):
                     num_array.append(i)
             #窗口过滤完之后的数量
     num_array=set(num_array)
-    return num_array
+    '''
+    return candidates
 
 def feature_mapping(regions):
     #如果保留pooling5，也就是映射到7*7
@@ -57,18 +60,15 @@ def feature_mapping(regions):
     #如果不保留pooling5，也就是映射到14*14  
 #    for ele in regions:
 #        mapping.append((math.floor(ele[0]/16)+1,math.floor(ele[1]/16)+1,math.ceil((ele[0]+ele[2])/16)-1-(math.floor(ele[0]/16)+1),
-#        math.ceil((ele[1]+ele[3])/16)-1-(math.floor(ele[1]/16)+1)))     
+#        math.ceil((ele[1]+ele[3])/16)-1-(math.floor(ele[1]/16)+1)))   
+    mapping=list(set(mapping))
     return mapping
+
 '''
-img=torch.rand([3,224,224])
-img=img.view(224,224,-1)
-#img=cv2.imread('2011_002943.jpg')
+img=cv2.imread('2009_000016.jpg')
 a=ssw(img)
 b=feature_mapping(a)
 tensor=torch.from_numpy(np.array(b))
 print(tensor)
-print(tensor.shape)
-tensor=tensor.view([1,*tensor.shape])
-
 print(tensor.shape)
 '''
