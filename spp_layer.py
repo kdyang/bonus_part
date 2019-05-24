@@ -18,7 +18,7 @@ def spatial_pyramid_pool(previous_conv, num_sample, previous_conv_size, out_pool
         w_wid = math.ceil(previous_conv_size[1] / out_pool_size[i])
         h_pad = min(math.floor((h_wid*out_pool_size[i] - previous_conv_size[0] + 1)/2),math.floor(h_wid/2))
         w_pad = min(math.floor((w_wid*out_pool_size[i] - previous_conv_size[1] + 1)/2),math.floor(w_wid/2))
-        print([h_wid,w_wid,h_pad,w_pad])
+        #print([h_wid,w_wid,h_pad,w_pad])
         maxpool = nn.MaxPool2d((h_wid, w_wid), stride=(h_wid, w_wid), padding=(h_pad, w_pad))
         x = maxpool(previous_conv)
         if(i == 0):
