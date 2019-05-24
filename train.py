@@ -90,7 +90,7 @@ if not args.test:
 
             running_loss += loss.item()
 
-            if i % 100 == 99:
+            if i % 500 == 499:
                 print('[%d , %5d] loss: %.3f' % (epoch + 1 , i + 1 , running_loss / 2000))
                 running_loss = 0.0
         writer.add_scalar('Train/loss', loss.item(),epoch)
