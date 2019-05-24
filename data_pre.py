@@ -55,6 +55,7 @@ class myDataSet(data.Dataset):
                             ssw_block[i, j] = int(2)
                         else:
                             ssw_block[i, j] = int(words[i * 4 + j + 1])
+                break
         return data_once, ssw_block, torch.Tensor(label_once)
     
     def __len__(self):
