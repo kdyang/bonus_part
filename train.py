@@ -79,8 +79,10 @@ if not args.test:
             optimizer.zero_grad()
             #ssw
             #kuang=kuang.view([1,*kuang.shape])
-            print(kuang.shape)
+            #print(kuang.shape)
             #forward + backward + optimizer
+            if kuang.size(1)==0:
+                continue
             outputs_1,output_2 = net_wsddn(images,kuang)
             loss = criterion(outputs_1 , labels)
             loss.backward()
