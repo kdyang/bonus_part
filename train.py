@@ -78,7 +78,7 @@ if not args.test:
             kuang =Variable(kuang).cuda()
             optimizer.zero_grad()
             #ssw
-            if kuang.size(1)==0
+            if kuang.size(1)==0:
                 print(kuang)
                 continue
             #kuang=kuang.view([1,*kuang.shape])
