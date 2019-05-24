@@ -50,11 +50,13 @@ class myDataSet(data.Dataset):
             if words[0] == self.imgs[index][0]:
                 ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                 for i in range(floor((len(words) - 1) / 4)):
-                    for j in range(4):
-                        if j>=2 and int(words[i * 4 + j + 1])<2:
-                            ssw_block[i, j] = int(2)
-                        else:
-                            ssw_block[i, j] = int(words[i * 4 + j + 1])
+                    w=max(int(words[i * 4 + 3]),2)
+                    h=max(int(words[i*4+4]),2)
+                    ssw_block[i,0]=(30-w if (int(words[i*4+1])+w>=31) else int(words[i*4+1])
+                    ssw_block[i,2]=w
+                    ssw_block[i,1]=(30-h if (int(words[i*4+2])+h>=31) else int(words[i*4+2])
+                    ssw_block[i,3]=h                    
+                
                 break
         return data_once, ssw_block, torch.Tensor(label_once)
     
