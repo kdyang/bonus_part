@@ -65,4 +65,4 @@ if __name__ == '__main__':
     testData = myDataSet('JPEGImages/' ,1, Transform)
     print('trainData', len(trainData))
     print('testData', len(testData))
-    print(trainData[0][2])
+    print(trainData[1][1])
