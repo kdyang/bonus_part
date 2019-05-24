@@ -79,9 +79,11 @@ if not args.test:
             optimizer.zero_grad()
             #ssw
             print(kuang.shape)
+            '''
             if kuang.size(1)==0:
                 print(kuang)
                 continue
+                '''
             #kuang=kuang.view([1,*kuang.shape])
             #print(kuang.shape)
             #forward + backward + optimizer
@@ -93,7 +95,7 @@ if not args.test:
             running_loss += loss.item()
 
             if i % 500 == 499:
-                print('[%d , %5d] loss: %.3f' % (epoch + 1 , i + 1 , running_loss / 2000))
+                print('[%d , %5d] loss: %.3f' % (epoch + 1 , i + 1 , running_loss / 500))
                 running_loss = 0.0
         writer.add_scalar('Train/loss', loss.item(),epoch)
         torch.save(net_wsddn.state_dict(), os.path.join(model_path, 'wsddn.pkl'))
