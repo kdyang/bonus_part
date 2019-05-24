@@ -65,7 +65,7 @@ testData = myDataSet('JPEGImages/' ,1, Transform)
 #print('trainData', len(trainData))
 #print('testData', len(testData))
 
-trainLoader = torch.utils.data.DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=True,num_workers=3)
+trainLoader = torch.utils.data.DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=False,num_workers=1)
 testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=BATCH_SIZE, shuffle=False)
 if not args.test:
     net_wsddn.train()
