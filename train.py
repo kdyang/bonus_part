@@ -72,21 +72,16 @@ if not args.test:
     for epoch in range(EPOCH):
         scheduler.step(epoch)
         running_loss = 0.0
-        for i, (images, labels) in enumerate(trainLoader):
+        for i, (images, kuang,labels) in enumerate(trainLoader):
             images = Variable(images).cuda()
             labels = Variable(labels).cuda()
+            kuang =Variable(kuang).cuda()
             optimizer.zero_grad()
             #ssw
             #   for index in range(BATCH_SIZE):
-            img=images[0,:,:,:]
-            img=img.view(480,480,-1)
-            temp=ssw.ssw(img.cpu())
-            temp=ssw.feature_mapping(temp)
-            temp=torch.from_numpy(np.array(temp))
-            temp=tensor.view([1,*tensor.shape])
-            print(i)
+            print(kuang)
             #forward + backward + optimizer
-            outputs_1,output_2 = net_wsddn(images,temp)
+            outputs_1,output_2 = net_wsddn(images,kuang)
             loss = criterion(outputs_1 , labels)
             loss.backward()
             optimizer.step()
