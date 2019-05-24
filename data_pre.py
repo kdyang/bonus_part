@@ -51,11 +51,13 @@ class myDataSet(data.Dataset):
                 ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                 for i in range(floor((len(words) - 1) / 4)):
                     for j in range(4):
-                        ssw_block[i, j] = float(words[i * 4 + j + 1])
+                        ssw_block[i, j] = int(words[i * 4 + j + 1])
                 flag=1
                 break
+        print(ssw_block.shape)
         area=(ssw_block[:,2]>=2)&(ssw_block[:,3]>=2)
         ssw_block=ssw_block[area]
+        print(ssw_block.shape)
         return data_once, ssw_block, torch.Tensor(label_once)
     
     def __len__(self):
