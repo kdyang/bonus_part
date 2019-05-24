@@ -46,13 +46,16 @@ class myDataSet(data.Dataset):
         for line in self.ssw_txt:
             line = line.rstrip()
             words = line.split()
+            flag=0
             if words[0] == self.imgs[index][0]:
                 ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                 for i in range(floor((len(words) - 1) / 4)):
                     for j in range(4):
                         ssw_block[i, j] = float(words[i * 4 + j + 1])
-            else:
-                print(words[0])
+                flag=1
+                break
+        if flag==0:
+            print(words[0])
         return data_once, ssw_block, torch.Tensor(label_once)
     
     def __len__(self):
