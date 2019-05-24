@@ -52,9 +52,9 @@ class myDataSet(data.Dataset):
                 for i in range(floor((len(words) - 1) / 4)):
                     w=max(int(words[i * 4 + 3]),2)
                     h=max(int(words[i*4+4]),2)
-                    ssw_block[i,0]=(30-w if (int(words[i*4+1])+w>=31) else int(words[i*4+1])
+                    ssw_block[i,0]=(30-w if (int(words[i*4+1])+w>=31) else int(words[i*4+1]))
                     ssw_block[i,2]=w
-                    ssw_block[i,1]=(30-h if (int(words[i*4+2])+h>=31) else int(words[i*4+2])
+                    ssw_block[i,1]=(30-h if (int(words[i*4+2])+h>=31) else int(words[i*4+2]))
                     ssw_block[i,3]=h                    
                 
                 break
