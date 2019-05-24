@@ -51,8 +51,8 @@ class myDataSet(data.Dataset):
                 ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                 for i in range(floor((len(words) - 1) / 4)):
                     for j in range(4):
-                        if j>=2 and int(words[i * 4 + j + 1])<3:
-                            ssw_block[i, j] = int(3)
+                        if j>=2 and int(words[i * 4 + j + 1])<2:
+                            ssw_block[i, j] = int(2)
                         else:
                             ssw_block[i, j] = int(words[i * 4 + j + 1])
                 break
