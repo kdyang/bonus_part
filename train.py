@@ -78,7 +78,7 @@ if not args.test:
             kuang =Variable(kuang).cuda()
             optimizer.zero_grad()
             #ssw
-            print(kuang.item())
+            print(kuang)
             '''
             if kuang.size(1)==0:
                 print(kuang)
