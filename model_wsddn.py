@@ -107,6 +107,8 @@ class WSDDN(nn.Module):
                     y_piece = fmap_piece
                     #print('fmap_piece.shape', fmap_piece.shape)
                 else:
+                    print(y_piece.shape)
+                    print(fmap_piece.shape)
                     y_piece = torch.cat((y_piece, fmap_piece))
             if i == 0:
                 y = torch.unsqueeze(y_piece, 0)
