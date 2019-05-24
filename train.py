@@ -78,7 +78,7 @@ if not args.test:
             kuang =Variable(kuang).cuda()
             optimizer.zero_grad()
             #ssw
-            #   for index in range(BATCH_SIZE):
+            kuang=kuang.view([1,*kuang.shape])
             print(kuang)
             #forward + backward + optimizer
             outputs_1,output_2 = net_wsddn(images,kuang)
