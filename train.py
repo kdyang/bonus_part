@@ -81,8 +81,6 @@ if not args.test:
             #kuang=kuang.view([1,*kuang.shape])
             #print(kuang.shape)
             #forward + backward + optimizer
-            if kuang.size(1)==0:
-                continue
             outputs_1,output_2 = net_wsddn(images,kuang)
             loss = criterion(outputs_1 , labels)
             loss.backward()
@@ -102,12 +100,13 @@ else:
     ##UNFINISHED
     '''
     net_wsddn.eval()
-    for images, labels in trainLoader:
+    for images, kuang,labels in trainLoader:
             images = Variable(images).cuda()
             labels= Variable(labels).cuda()
-            outputs = net_wsddn(images)
-            outputs=torch.sigmoid(outputs)
-            predicted = outputs.data>=0.5
+            kuang=Variable(kuang).cuda()
+            outputs_1,output_2 = net_wsddn(images,kuang)
+
+            predicted = outputs_1.data>=0.5
             vec_1 += (predicted.float() == labels).cpu().float().sum(0) #correct_num
             vec_2 += labels.cpu().sum(0)#appear_num
             #equal to predicted=outputs.data>=0
@@ -119,9 +118,9 @@ else:
         for images, labels in testLoader:
             images = Variable(images).cuda()
             labels= Variable(labels).cuda()
-            outputs = net_wsddn(images)
-            outputs=torch.sigmoid(outputs)
-            predicted = outputs.data>=0.5
+            outputs_1,output_2 = net_wsddn(images,kuang)
+
+            predicted = outputs_1.data>=0.5
             vec_1 += (predicted.float() == labels).cpu().float().sum(0) #correct_num
             vec_2 += labels.cpu().sum(0)#appear_num
             #equal to predicted=outputs.data>=0
