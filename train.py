@@ -64,7 +64,7 @@ trainData = myDataSet('JPEGImages/', 0, Transform)
 testData = myDataSet('JPEGImages/' ,1, Transform)
 #print('trainData', len(trainData))
 #print('testData', len(testData))
-
+c=1
 trainLoader = torch.utils.data.DataLoader(dataset=trainData, batch_size=BATCH_SIZE, shuffle=False,num_workers=1)
 testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=BATCH_SIZE, shuffle=False)
 if not args.test:
@@ -79,6 +79,8 @@ if not args.test:
             optimizer.zero_grad()
             #ssw
             print(kuang.shape)
+            print(c)
+            c=c+1
             '''
             if kuang.size(1)==0:
                 print(kuang)
