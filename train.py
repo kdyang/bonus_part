@@ -71,7 +71,7 @@ testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=BATCH_SIZE
 if not args.test:
     net_wsddn.train()
     for epoch in range(EPOCH):
-        scheduler.step(epoch)
+        #scheduler.step(epoch)
         running_loss = 0.0
         print(epoch)
         for i, (images, kuang,labels) in enumerate(trainLoader):
