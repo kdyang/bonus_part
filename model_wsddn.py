@@ -58,8 +58,6 @@ class WSDDN(nn.Module):
         self.fc7 = nn.Linear(4096, 4096)
         self.fc8c = nn.Linear(4096, 20)
         self.fc8d = nn.Linear(4096, 20)
-        for param in self.features.parameters():
-            param.requires_grad = False
 
     def forward(self, x, ssw_get): #x.shape = [BATCH_SIZE, 3, h, w]  ssw_get.shape = [BATCH_SIZE, R, 4] out.shape = [BATCH_SIZE, 20]
         x = self.features(x)
