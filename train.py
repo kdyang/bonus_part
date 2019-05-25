@@ -89,6 +89,7 @@ if not args.test:
             #print(kuang.shape)
             #forward + backward + optimizer
             outputs_1,output_2 = net_wsddn(images,kuang)
+            outputs_1=torch.sigmoid(outputs_1)
             loss = criterion(outputs_1 , labels)
             loss.backward()
             optimizer.step()
