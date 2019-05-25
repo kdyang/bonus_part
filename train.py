@@ -28,7 +28,7 @@ parser.add_argument('--model_path', type=str,default='./model_para',
  help='dir to save para')
 parser.add_argument('--BATCH_SIZE', type=int,default=1,
  help='batch_size')
-parser.add_argument('--LR', type=float,default=0.0001,
+parser.add_argument('--LR', type=float,default=0.00001,
  help='Learning Rate')
 parser.add_argument('--EPOCH', type=int,default=40,
  help='epoch')
@@ -57,7 +57,8 @@ else:
 net_wsddn.cuda()
 
 criterion = nn.BCELoss(weight=None, size_average=True) 
-optimizer = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9,weight_decay=5e-3)
+optimizer1 = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9)
+optimizer2 = optim.SGD(net_wsddn.parameters(), lr = 0.1 * LR, momentum = 0.9)
 writer = SummaryWriter('WSDDN')
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 trainData = myDataSet('JPEGImages/', 0, Transform)
@@ -77,7 +78,10 @@ if not args.test:
             images = Variable(images).cuda()
             labels = Variable(labels).cuda()
             kuang =Variable(kuang).cuda()
-            optimizer.zero_grad()
+            if epoch < 10:
+                optimizer1.zero_grad()
+            else:
+                optimizer2.zero_grad()
             #ssw
             #print(kuang)
             '''
