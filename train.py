@@ -72,6 +72,7 @@ if not args.test:
     for epoch in range(EPOCH):
         scheduler.step(epoch)
         running_loss = 0.0
+        print(epoch)
         for i, (images, kuang,labels) in enumerate(trainLoader):
             images = Variable(images).cuda()
             labels = Variable(labels).cuda()
