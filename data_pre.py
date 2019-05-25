@@ -43,7 +43,7 @@ class myDataSet(data.Dataset):
                         linee = linee.rstrip()
                         wordss = linee.split()
                         ssw_block = torch.tensor([0,0,2,2])
-                        if words[0] == self.imgs[index][0]:
+                        if wordss[0] == words[0]:
                             ssw_block = torch.Tensor(floor((len(words) - 1) / 4), 4)
                             for i in range(floor((len(words) - 1) / 4)):
                                 w=max(int(words[i * 4 + 3]),2)
