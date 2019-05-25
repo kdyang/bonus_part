@@ -96,7 +96,10 @@ if not args.test:
             outputs_1=torch.sigmoid(outputs_1)
             loss = criterion(outputs_1 , labels)
             loss.backward()
-            optimizer.step()
+            if epoch < 10:
+                optimizer1.step()
+            else:
+                optimizer2.step()
 
             running_loss += loss.item()
 
