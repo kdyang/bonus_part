@@ -57,7 +57,7 @@ else:
 net_wsddn.cuda()
 
 criterion = nn.BCELoss(weight=None, size_average=True) 
-optimizer = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9)
+optimizer = optim.SGD(net_wsddn.parameters(), lr = LR, momentum = 0.9,weight_decay=5e-3)
 writer = SummaryWriter('WSDDN')
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=7, gamma=0.1)
 trainData = myDataSet('JPEGImages/', 0, Transform)
