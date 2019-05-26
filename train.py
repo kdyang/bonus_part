@@ -116,7 +116,7 @@ else:
     
     net_wsddn.eval()
     result_name = 'box_result.txt'
-    f = file(result_name, 'a+')
+    f = open(result_name, 'a+')
     for i, (images, kuang, labels) in testLoader:
         images = Variable(images).cuda()
         labels = Variable(labels).cuda()
