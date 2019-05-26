@@ -128,7 +128,7 @@ else:
                         if output_2[k, j] > 0.5:
                             new_line = str(i) + str(j) + str(kuang[k, 0]) + str(kuang[k, 1]) + str(kuang[k, 2]) + str(kuang[k, 3]) + '\n'
                             f.write(new_line)
-        if i % 500 == 0:
+        if (i % 500) == 0:
             print(i)
             #predicted = outputs_1.data>=0.5
             #vec_1 += (predicted.float() == labels).cpu().float().sum(0) #correct_num
