@@ -118,16 +118,16 @@ else:
     result_name = 'box_result.txt'
     f = file(result_name, 'a+')
     for i, (images, kuang, labels) in testLoader:
-            images = Variable(images).cuda()
-            labels = Variable(labels).cuda()
-            kuang = Variable(kuang).cuda()
-            outputs_1,output_2 = net_wsddn(images,kuang)
-            for j in range(outputs_1.size(1)):
-                if outputs_1[1, j] > 0.5:
-                    for k in range(output_2.size(0)):
-                        if output_2[k, j] > 0.5:
-                            new_line = str(i) + str(j) + str(kuang[k, 0]) + str(kuang[k, 1]) + str(kuang[k, 2]) + str(kuang[k, 3]) + '\n'
-                            f.write(new_line)
+        images = Variable(images).cuda()
+        labels = Variable(labels).cuda()
+        kuang = Variable(kuang).cuda()
+        outputs_1,output_2 = net_wsddn(images,kuang)
+        for j in range(outputs_1.size(1)):
+            if outputs_1[1, j] > 0.5:
+                for k in range(output_2.size(0)):
+                    if output_2[k, j] > 0.5:
+                        new_line = str(i) + str(j) + str(kuang[k, 0]) + str(kuang[k, 1]) + str(kuang[k, 2]) + str(kuang[k, 3]) + '\n'
+                        f.write(new_line)
         if (i % 500) == 0:
             print(i)
             #predicted = outputs_1.data>=0.5
