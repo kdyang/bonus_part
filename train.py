@@ -123,9 +123,9 @@ else:
         kuang = Variable(kuang).cuda()
         outputs_1, output_2, output_3 = net_wsddn(images,kuang)
         for j in range(outputs_1.size(1)):
-            if outputs_1[0, j] > 0.2:
+            if outputs_1[0, j] > 0.1:
                 for k in range(output_2.size(0)):
-                    if output_2[0, k, j] > 0.2:
+                    if output_2[0, k, j] > 0.01:
                         #print(kuang.shape)
                         new_line = [i, j, float('%.3f' % output_3[0, k, j].item()), 8 * kuang[0, k, 0].item(), 
                                     8 * kuang[0, k, 1].item(), 8 * kuang[0, k, 2].item(), 8 * kuang[0, k, 3].item()]
