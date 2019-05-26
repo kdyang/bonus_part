@@ -125,7 +125,7 @@ else:
         for j in range(outputs_1.size(1)):
             if outputs_1[0, j] > 0.5:
                 for k in range(output_2.size(0)):
-                    if output_2[k, j].item() > 0.5:
+                    if output_2[0, k, j] > 0.5:
                         new_line = str(i) + str(j) + str(kuang[k, 0]) + str(kuang[k, 1]) + str(kuang[k, 2]) + str(kuang[k, 3]) + '\n'
                         f.write(new_line)
         if (i % 500) == 0:
