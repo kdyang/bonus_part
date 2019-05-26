@@ -127,12 +127,12 @@ else:
                 for k in range(output_2.size(0)):
                     if output_2[0, k, j] > 0.5:
                         #print(kuang.shape)
-                        new_line = [i, j, output_3[0, k, j], kuang[0, k, 0].item(), kuang[0, k, 1].item(), kuang[0, k, 2].item(), kuang[0, k, 3].item()]
+                        new_line = [i, j, output_3[0, k, j].item(), kuang[0, k, 0].item(), kuang[0, k, 1].item(), kuang[0, k, 2].item(), kuang[0, k, 3].item()]
                         #new_line = str(i) + ' ' +  str(j) + ' ' + str(kuang[0, k, 0].item()) + ' ' + str(kuang[0, k, 1].item()) +
                         #           ' ' + str(kuang[0, k, 2].item()) + ' ' + str(kuang[0, k, 3].item()) + '\n'
                         for line_mem in new_line:
                             f.write(str(line_mem) + ' ')
-                        f.write('r\n')
+                        f.write('\r\n')
         if (i % 500) == 0:
             print(i)
             #predicted = outputs_1.data>=0.5
