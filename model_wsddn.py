@@ -81,7 +81,7 @@ class WSDDN(nn.Module):
         x = segma_c * segma_d
         x = torch.sum(x, dim = 1)
         #print(x.shape)
-        return x, segma_d
+        return x, segma_d, segma_c
 
     def _make_layers(self, cfg):  #init VGG
         layers = []
