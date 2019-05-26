@@ -116,7 +116,7 @@ else:
     
     net_wsddn.eval()
     result_name = 'box_result.txt'
-    f = open(result_name, 'a+')
+    f = open(result_name, 'w')
     for i, (images, kuang, labels) in enumerate(testLoader):
         images = Variable(images).cuda()
         labels = Variable(labels).cuda()
@@ -127,9 +127,10 @@ else:
                 for k in range(output_2.size(0)):
                     if output_2[0, k, j] > 0.5:
                         #print(kuang.shape)
-                        new_line = str(i) +' ' +  str(j) + ' ' + str(kuang[0, k, 0].item()) + ' ' + str(kuang[0, k, 1].item()) +
-                                   ' ' + str(kuang[0, k, 2].item()) + ' ' + str(kuang[0, k, 3].item()) + '\n'
-                        f.write(new_line)
+                        new_line = [i, j, kuang[0, k, 0].item(), kuang[0, k, 1].item(), kuang[0, k, 2].item(), kuang[0, k, 3].item()]
+                        #new_line = str(i) + ' ' +  str(j) + ' ' + str(kuang[0, k, 0].item()) + ' ' + str(kuang[0, k, 1].item()) +
+                        #           ' ' + str(kuang[0, k, 2].item()) + ' ' + str(kuang[0, k, 3].item()) + '\n'
+                        f.write(str(new_line))
         if (i % 500) == 0:
             print(i)
             #predicted = outputs_1.data>=0.5
