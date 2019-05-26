@@ -131,7 +131,7 @@ else:
                         #new_line = str(i) + ' ' +  str(j) + ' ' + str(kuang[0, k, 0].item()) + ' ' + str(kuang[0, k, 1].item()) +
                         #           ' ' + str(kuang[0, k, 2].item()) + ' ' + str(kuang[0, k, 3].item()) + '\n'
                         for line_mem in new_line:
-                            f.write(line_mem)
+                            f.write(str(line_mem) + ' ')
                         f.write('\n')
         if (i % 500) == 0:
             print(i)
