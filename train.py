@@ -92,7 +92,7 @@ if not args.test:
             #kuang=kuang.view([1,*kuang.shape])
             #print(kuang.shape)
             #forward + backward + optimizer
-            outputs_1,output_2 = net_wsddn(images,kuang)
+            outputs_1, output_2, output_3 = net_wsddn(images,kuang)
             outputs_1=torch.sigmoid(outputs_1)
             loss = criterion(outputs_1 , labels)
             loss.backward()
@@ -121,18 +121,18 @@ else:
         images = Variable(images).cuda()
         labels = Variable(labels).cuda()
         kuang = Variable(kuang).cuda()
-        outputs_1,output_2 = net_wsddn(images,kuang)
+        outputs_1, output_2, output_3 = net_wsddn(images,kuang)
         for j in range(outputs_1.size(1)):
             if outputs_1[0, j] > 0.5:
                 for k in range(output_2.size(0)):
                     if output_2[0, k, j] > 0.5:
                         #print(kuang.shape)
-                        new_line = [i, j, kuang[0, k, 0].item(), kuang[0, k, 1].item(), kuang[0, k, 2].item(), kuang[0, k, 3].item()]
+                        new_line = [i, j, output_3[0, k, j], kuang[0, k, 0].item(), kuang[0, k, 1].item(), kuang[0, k, 2].item(), kuang[0, k, 3].item()]
                         #new_line = str(i) + ' ' +  str(j) + ' ' + str(kuang[0, k, 0].item()) + ' ' + str(kuang[0, k, 1].item()) +
                         #           ' ' + str(kuang[0, k, 2].item()) + ' ' + str(kuang[0, k, 3].item()) + '\n'
                         for line_mem in new_line:
                             f.write(str(line_mem) + ' ')
-                        f.write('\n')
+                        f.write('r\n')
         if (i % 500) == 0:
             print(i)
             #predicted = outputs_1.data>=0.5
