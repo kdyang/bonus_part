@@ -123,7 +123,7 @@ else:
         kuang = Variable(kuang).cuda()
         outputs_1, output_2, output_3 = net_wsddn(images,kuang)
         for j in range(outputs_1.size(1)):
-            if outputs_1[0, j] > 0.05:
+            if outputs_1[0, j] > 0.06:
                 for k in range(output_2.size(0)):
                     if output_2[0, k, j] > 0.01:
                         #print(kuang.shape)
