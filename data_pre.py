@@ -32,7 +32,7 @@ class myDataSet(data.Dataset):
                         label_cur[int(words[i])] = 1
                         #label_cur.append(int(words[i]))
                     #self.imgs.append([words[0], label_cur])
-                    for linee in self.ssw_txt:
+                    for linee in self.ssw_test_txt:
                         linee = linee.rstrip()
                         wordss = linee.split()
                         if wordss[0] == words[0]:
